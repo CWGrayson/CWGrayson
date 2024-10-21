@@ -1,0 +1,3 @@
+- 👋 Hi, I’m Connor Grayson (@CWGrayson)
+- I am a reasercher at the Center for Negative Carbon Emmissions at Arizona State University
+-  How to reach me: cwgrays@asu.edu or by fax? I guess there is probably one in the building. 
