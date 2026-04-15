@@ -1,3 +1,5 @@
 I am Connor Grayson a doctoral candidate and the Peter Relan fellow at the Center for Negative Carbon Emissions. 
+
 My thesis work is on understanding the behavior of sequestered carbon. Key areas of my work are on evaluating the technical aspects of permanence of mineralized carbon, and on the socio-technical systems that support carbon sequestration.
+
 My long-term research interests are in understanding the role of carbon capture and sequestration as an infrastructure system, and how it relates with other coupled systems such as water, and power generation, along with understanding the role of traditional approaches to engineering approaches to infrastructure design and how this shapes resiliency against cyber risk, particularly under nonstationarity of climate hazards. I remain actively involved in developing new carbon capture and sequestration technologies, with particular interest in how these technologies will be manufactured. 
