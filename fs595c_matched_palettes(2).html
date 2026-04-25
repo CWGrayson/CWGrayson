@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operational Palettes — FS 595C Matches</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Epilogue:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Epilogue', sans-serif;
+    background: #F5F4F1;
+    color: #1A1008;
+    padding: 48px 40px;
+    min-height: 100vh;
+  }
+
+  header {
+    margin-bottom: 52px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid #232F54;
+  }
+  .eyebrow {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #7A7060;
+    margin-bottom: 8px;
+  }
+  h1 { font-size: 34px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+  .subtitle {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: #9A9080;
+    letter-spacing: 0.04em;
+  }
+
+  .legend {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: #7A7060;
+  }
+  .legend-dot {
+    width: 12px; height: 12px; border-radius: 3px;
+  }
+  .legend-orig { background: #232F54; }
+  .legend-fs { background: #4170B6; outline: 2px dashed #4170B6; outline-offset: 2px; }
+
+  /* ΔE quality indicator */
+  .de-badge {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+    display: inline-block;
+  }
+  .de-close  { background: #d4edda; color: #155724; }
+  .de-good   { background: #fff3cd; color: #856404; }
+  .de-fair   { background: #f8d7da; color: #721c24; }
+
+  .palette-group { margin-bottom: 56px; }
+  .group-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .group-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+  .group-label {
+    font-size: 13px;
+    color: #7A7060;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+  .divider {
+    flex: 1;
+    height: 1px;
+    background: rgba(0,0,0,0.08);
+  }
+
+  .pairs-grid {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .color-pair {
+    width: 160px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.09);
+    background: #EDEDEA;
+  }
+
+  .pair-swatches {
+    display: flex;
+    height: 80px;
+  }
+  .swatch-half {
+    flex: 1;
+    position: relative;
+    cursor: pointer;
+    transition: filter 0.12s;
+  }
+  .swatch-half:hover { filter: brightness(1.07); }
+  .swatch-half:first-child {
+    border-right: 2px solid rgba(255,255,255,0.3);
+  }
+
+  .swatch-label {
+    position: absolute;
+    bottom: 5px;
+    left: 0; right: 0;
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    opacity: 0.9;
+  }
+  .label-dark { color: rgba(255,255,255,0.85); }
+  .label-light { color: rgba(0,0,0,0.6); }
+
+  .pair-info {
+    padding: 10px 12px 12px;
+  }
+
+  .orig-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1A1008;
+    margin-bottom: 5px;
+    line-height: 1.2;
+  }
+
+  .orig-hex {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: #5A5040;
+  }
+
+  .arrow-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 7px 0 5px;
+  }
+  .arrow {
+    font-size: 10px;
+    color: #9A9080;
+  }
+  .fs-code {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: #1A1008;
+    background: rgba(0,0,0,0.06);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .fs-name {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: #7A7060;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .fs-hex {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: #5A5040;
+    margin-bottom: 6px;
+  }
+
+  .copy-row {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+  }
+  .copy-btn {
+    flex: 1;
+    font-size: 9px;
+    padding: 3px 0;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.15);
+    background: transparent;
+    color: #7A7060;
+    cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+  .copy-btn:hover { background: rgba(0,0,0,0.05); }
+
+  /* Tag colors */
+  .tag-blue   { background: #232F54; color: #95B7DC; }
+  .tag-neutral{ background: #4170B6; color: #ffffff; }
+  .tag-red    { background: #B2060C; color: #F2B807; }
+  .tag-alt    { background: #2F3549; color: #F2B33D; }
+
+  /* Grayscale section */
+  .gs-group { margin-bottom: 48px; }
+  .gs-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+  .gs-pair {
+    width: 130px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.09);
+    background: #EDEDEA;
+  }
+  .gs-swatches { display: flex; height: 64px; }
+  .gs-half {
+    flex: 1;
+    cursor: pointer;
+  }
+  .gs-half:first-child { border-right: 2px solid rgba(255,255,255,0.3); }
+  .gs-info { padding: 8px 10px 10px; }
+  .gs-name { font-size: 11px; font-weight: 600; color: #1A1008; margin-bottom: 2px; }
+  .gs-hexes { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: #7A7060; }
+
+  .tag-gray   { background: #484848; color: #D0D0D0; }
+
+  .toast {
+    position: fixed; bottom: 28px; left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: #1A1008; color: #fff;
+    font-family: 'Share Tech Mono', monospace; font-size: 12px;
+    padding: 8px 20px; border-radius: 100px;
+    opacity: 0; transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none; z-index: 99;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Operational Design System · Color Reference</div>
+  <h1>FS 595C Matched Palettes</h1>
+  <div class="subtitle">Each swatch shows original color (left) alongside closest Federal Standard 595C match (right)</div>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot legend-orig"></div> Original color</div>
+  <div class="legend-item"><div class="legend-dot legend-fs"></div> FS 595C match (right half)</div>
+  <div class="legend-item"><span class="de-badge de-close">ΔE &lt; 10</span> &nbsp;Very close</div>
+  <div class="legend-item"><span class="de-badge de-good">ΔE 10–20</span> &nbsp;Good match</div>
+  <div class="legend-item"><span class="de-badge de-fair">ΔE &gt; 20</span> &nbsp;Approximate</div>
+</div>
+
+<!-- ── BLUE FORCE ── -->
+<div class="palette-group">
+  <div class="group-header">
+    <span class="group-tag tag-blue">Blue Force</span>
+    <span class="group-label">Friendly / positive outcomes</span>
+    <div class="divider"></div>
+  </div>
+  <div class="pairs-grid">
+
+    <!-- Deep Navy → FS 15050 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#232F54;" onclick="copy('#232F54')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#2e3d4f;" onclick="copy('#2e3d4f')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Deep Navy</div>
+        <div class="orig-hex">#232F54</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 15050</span><span class="de-badge de-good">ΔE 14.8</span></div>
+        <div class="fs-name">Dark blue</div>
+        <div class="fs-hex">#2E3D4F</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#232F54')">orig</button>
+          <button class="copy-btn" onclick="copy('#2e3d4f')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mid Navy → FS 15152 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#414F78;" onclick="copy('#414F78')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#2c5470;" onclick="copy('#2c5470')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Mid Navy</div>
+        <div class="orig-hex">#414F78</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 15152</span><span class="de-badge de-good">ΔE 12.3</span></div>
+        <div class="fs-name">Blue</div>
+        <div class="fs-hex">#2C5470</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#414F78')">orig</button>
+          <button class="copy-btn" onclick="copy('#2c5470')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signal Red → FS 12199 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#E54559;" onclick="copy('#E54559')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#da473b;" onclick="copy('#da473b')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Signal Red</div>
+        <div class="orig-hex">#E54559</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 12199</span><span class="de-badge de-good">ΔE 15.6</span></div>
+        <div class="fs-name">Coast Guard red #40</div>
+        <div class="fs-hex">#DA473B</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#E54559')">orig</button>
+          <button class="copy-btn" onclick="copy('#da473b')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Warm Tan → FS 10371 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#E5A06D;" onclick="copy('#E5A06D')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#c18f62;" onclick="copy('#c18f62')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Warm Tan</div>
+        <div class="orig-hex">#E5A06D</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 10371</span><span class="de-badge de-good">ΔE 11.9</span></div>
+        <div class="fs-name">Buff / Coast Guard</div>
+        <div class="fs-hex">#C18F62</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#E5A06D')">orig</button>
+          <button class="copy-btn" onclick="copy('#c18f62')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pale Peach → FS 11670 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#F6C6AC;" onclick="copy('#F6C6AC')">
+          <div class="swatch-label label-light">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#eecbb4;" onclick="copy('#eecbb4')">
+          <div class="swatch-label label-light">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Pale Peach</div>
+        <div class="orig-hex">#F6C6AC</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 11670</span><span class="de-badge de-close">ΔE 5.7</span></div>
+        <div class="fs-name">Peach</div>
+        <div class="fs-hex">#EECBB4</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#F6C6AC')">orig</button>
+          <button class="copy-btn" onclick="copy('#eecbb4')">fs</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── NEUTRAL ── -->
+<div class="palette-group">
+  <div class="group-header">
+    <span class="group-tag tag-neutral">Neutral</span>
+    <span class="group-label">Everyday use · primary</span>
+    <div class="divider"></div>
+  </div>
+  <div class="pairs-grid">
+
+    <!-- Ocean Blue → FS 15200 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#4170B6;" onclick="copy('#4170B6')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#4d7196;" onclick="copy('#4d7196')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Ocean Blue</div>
+        <div class="orig-hex">#4170B6</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 15200</span><span class="de-badge de-fair">ΔE 19.8</span></div>
+        <div class="fs-name">Blue</div>
+        <div class="fs-hex">#4D7196</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#4170B6')">orig</button>
+          <button class="copy-btn" onclick="copy('#4d7196')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sky Blue → FS 15177 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#6597DE;" onclick="copy('#6597DE')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#4c7da1;" onclick="copy('#4c7da1')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Sky Blue</div>
+        <div class="orig-hex">#6597DE</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 15177</span><span class="de-badge de-fair">ΔE 22.5</span></div>
+        <div class="fs-name">Blue</div>
+        <div class="fs-hex">#4C7DA1</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#6597DE')">orig</button>
+          <button class="copy-btn" onclick="copy('#4c7da1')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ice Blue → FS 15570 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#95B7DC;" onclick="copy('#95B7DC')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#7eaabf;" onclick="copy('#7eaabf')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Ice Blue</div>
+        <div class="orig-hex">#95B7DC</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 15570</span><span class="de-badge de-good">ΔE 11.3</span></div>
+        <div class="fs-name">Blue</div>
+        <div class="fs-hex">#7EAABF</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#95B7DC')">orig</button>
+          <button class="copy-btn" onclick="copy('#7eaabf')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Teal Green → FS 14260 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#4EAA88;" onclick="copy('#4EAA88')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#679a7c;" onclick="copy('#679a7c')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Teal Green</div>
+        <div class="orig-hex">#4EAA88</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 14260</span><span class="de-badge de-good">ΔE 12.7</span></div>
+        <div class="fs-name">OSHA safety green</div>
+        <div class="fs-hex">#679A7C</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#4EAA88')">orig</button>
+          <button class="copy-btn" onclick="copy('#679a7c')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Burnt Orange → FS 12473 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#F27244;" onclick="copy('#F27244')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#dc6e3a;" onclick="copy('#dc6e3a')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Burnt Orange</div>
+        <div class="orig-hex">#F27244</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 12473</span><span class="de-badge de-close">ΔE 8.0</span></div>
+        <div class="fs-name">Orange</div>
+        <div class="fs-hex">#DC6E3A</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#F27244')">orig</button>
+          <button class="copy-btn" onclick="copy('#dc6e3a')">fs</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── RED FORCE ── -->
+<div class="palette-group">
+  <div class="group-header">
+    <span class="group-tag tag-red">Red Force</span>
+    <span class="group-label">Adversary / threat</span>
+    <div class="divider"></div>
+  </div>
+  <div class="pairs-grid">
+
+    <!-- Deep Crimson → FS 17090 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#2B0C12;" onclick="copy('#2B0C12')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#2c2520;" onclick="copy('#2c2520')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Deep Crimson</div>
+        <div class="orig-hex">#2B0C12</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 17090</span><span class="de-badge de-good">ΔE 16.5</span></div>
+        <div class="fs-name">Very dark brown</div>
+        <div class="fs-hex">#2C2520</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#2B0C12')">orig</button>
+          <button class="copy-btn" onclick="copy('#2c2520')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Threat Red → FS 12199 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#B2060C;" onclick="copy('#B2060C')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#da473b;" onclick="copy('#da473b')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Threat Red</div>
+        <div class="orig-hex">#B2060C</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 12199</span><span class="de-badge de-good">ΔE 16.7</span></div>
+        <div class="fs-name">Coast Guard red #40</div>
+        <div class="fs-hex">#DA473B</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#B2060C')">orig</button>
+          <button class="copy-btn" onclick="copy('#da473b')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cold Blue → FS 15200 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#2477BF;" onclick="copy('#2477BF')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#4d7196;" onclick="copy('#4d7196')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Cold Blue</div>
+        <div class="orig-hex">#2477BF</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 15200</span><span class="de-badge de-fair">ΔE 20.9</span></div>
+        <div class="fs-name">Blue</div>
+        <div class="fs-hex">#4D7196</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#2477BF')">orig</button>
+          <button class="copy-btn" onclick="copy('#4d7196')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alert Gold → FS 13655 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#F2B807;" onclick="copy('#F2B807')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#f5b314;" onclick="copy('#f5b314')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Alert Gold</div>
+        <div class="orig-hex">#F2B807</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 13655</span><span class="de-badge de-close">ΔE 4.6</span></div>
+        <div class="fs-name">Blue Angels yellow</div>
+        <div class="fs-hex">#F5B314</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#F2B807')">orig</button>
+          <button class="copy-btn" onclick="copy('#f5b314')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hazard Orange → FS 12300 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#F2780C;" onclick="copy('#F2780C')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#db7b30;" onclick="copy('#db7b30')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Hazard Orange</div>
+        <div class="orig-hex">#F2780C</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 12300</span><span class="de-badge de-good">ΔE 17.7</span></div>
+        <div class="fs-name">OSHA safety orange</div>
+        <div class="fs-hex">#DB7B30</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#F2780C')">orig</button>
+          <button class="copy-btn" onclick="copy('#db7b30')">fs</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── ALT NEUTRAL ── -->
+<div class="palette-group">
+  <div class="group-header">
+    <span class="group-tag tag-alt">Alt Neutral</span>
+    <span class="group-label">Everyday use · alternative</span>
+    <div class="divider"></div>
+  </div>
+  <div class="pairs-grid">
+
+    <!-- Slate Navy → FS 15050 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#2F3549;" onclick="copy('#2F3549')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#2e3d4f;" onclick="copy('#2e3d4f')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Slate Navy</div>
+        <div class="orig-hex">#2F3549</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 15050</span><span class="de-badge de-close">ΔE 4.8</span></div>
+        <div class="fs-name">Dark blue</div>
+        <div class="fs-hex">#2E3D4F</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#2F3549')">orig</button>
+          <button class="copy-btn" onclick="copy('#2e3d4f')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charcoal → FS 15044 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#46424D;" onclick="copy('#46424D')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#3d434c;" onclick="copy('#3d434c')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Charcoal</div>
+        <div class="orig-hex">#46424D</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 15044</span><span class="de-badge de-close">ΔE 4.5</span></div>
+        <div class="fs-name">Dark blue Insignia</div>
+        <div class="fs-hex">#3D434C</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#46424D')">orig</button>
+          <button class="copy-btn" onclick="copy('#3d434c')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Amber Gold → FS 13507 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#F2B33D;" onclick="copy('#F2B33D')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#f5a829;" onclick="copy('#f5a829')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Amber Gold</div>
+        <div class="orig-hex">#F2B33D</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 13507</span><span class="de-badge de-close">ΔE 8.4</span></div>
+        <div class="fs-name">DoT highway yellow</div>
+        <div class="fs-hex">#F5A829</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#F2B33D')">orig</button>
+          <button class="copy-btn" onclick="copy('#f5a829')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pale Gold → FS 13695 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#FADC89;" onclick="copy('#FADC89')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#ecc984;" onclick="copy('#ecc984')">
+          <div class="swatch-label label-light">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Pale Gold</div>
+        <div class="orig-hex">#FADC89</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 13695</span><span class="de-badge de-close">ΔE 9.0</span></div>
+        <div class="fs-name">Ivory / Forest Service</div>
+        <div class="fs-hex">#ECC984</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#FADC89')">orig</button>
+          <button class="copy-btn" onclick="copy('#ecc984')">fs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Command Red → FS 12199 -->
+    <div class="color-pair">
+      <div class="pair-swatches">
+        <div class="swatch-half" style="background:#D93030;" onclick="copy('#D93030')">
+          <div class="swatch-label label-dark">ORIG</div>
+        </div>
+        <div class="swatch-half" style="background:#da473b;" onclick="copy('#da473b')">
+          <div class="swatch-label label-dark">FS</div>
+        </div>
+      </div>
+      <div class="pair-info">
+        <div class="orig-name">Command Red</div>
+        <div class="orig-hex">#D93030</div>
+        <div class="arrow-row"><span class="arrow">→</span><span class="fs-code">FS 12199</span><span class="de-badge de-close">ΔE 8.3</span></div>
+        <div class="fs-name">Coast Guard red #40</div>
+        <div class="fs-hex">#DA473B</div>
+        <div class="copy-row">
+          <button class="copy-btn" onclick="copy('#D93030')">orig</button>
+          <button class="copy-btn" onclick="copy('#da473b')">fs</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── GRAYSCALE ── -->
+<div class="gs-group">
+  <div class="group-header">
+    <span class="group-tag tag-gray">Grayscale</span>
+    <span class="group-label">UI scale · 8-step</span>
+    <div class="divider"></div>
+  </div>
+  <div class="gs-grid">
+
+    <div class="gs-pair">
+      <div class="gs-swatches">
+        <div class="gs-half" style="background:#000000;" onclick="copy('#000000')"></div>
+        <div class="gs-half" style="background:#191919;" onclick="copy('#191919')"></div>
+      </div>
+      <div class="gs-info">
+        <div class="gs-name">Black / Gray 1</div>
+        <div class="gs-hexes">#000000 · #191919</div>
+        <div style="margin-top:4px;"><span class="de-badge de-good" style="font-size:8px;">FS 17038 Near-black</span></div>
+      </div>
+    </div>
+
+    <div class="gs-pair">
+      <div class="gs-swatches">
+        <div class="gs-half" style="background:#484848;" onclick="copy('#484848')"></div>
+        <div class="gs-half" style="background:#3b3b3b;" onclick="copy('#3b3b3b')"></div>
+      </div>
+      <div class="gs-info">
+        <div class="gs-name">Gray 2</div>
+        <div class="gs-hexes">#484848 → #3B3B3B</div>
+        <div style="margin-top:4px;"><span class="de-badge de-close" style="font-size:8px;">FS 16081 Dark gray</span></div>
+      </div>
+    </div>
+
+    <div class="gs-pair">
+      <div class="gs-swatches">
+        <div class="gs-half" style="background:#747474;" onclick="copy('#747474')"></div>
+        <div class="gs-half" style="background:#7b8083;" onclick="copy('#7b8083')"></div>
+      </div>
+      <div class="gs-info">
+        <div class="gs-name">Gray 3</div>
+        <div class="gs-hexes">#747474 → #7B8083</div>
+        <div style="margin-top:4px;"><span class="de-badge de-close" style="font-size:8px;">FS 16231 Gray</span></div>
+      </div>
+    </div>
+
+    <div class="gs-pair">
+      <div class="gs-swatches">
+        <div class="gs-half" style="background:#BFBFBF;" onclick="copy('#BFBFBF')"></div>
+        <div class="gs-half" style="background:#b4b9bd;" onclick="copy('#b4b9bd')"></div>
+      </div>
+      <div class="gs-info">
+        <div class="gs-name">Gray 4</div>
+        <div class="gs-hexes">#BFBFBF → #B4B9BD</div>
+        <div style="margin-top:4px;"><span class="de-badge de-close" style="font-size:8px;">FS 16473 Gray</span></div>
+      </div>
+    </div>
+
+    <div class="gs-pair">
+      <div class="gs-swatches">
+        <div class="gs-half" style="background:#D0D0D0;" onclick="copy('#D0D0D0')"></div>
+        <div class="gs-half" style="background:#d0d2d3;" onclick="copy('#d0d2d3')"></div>
+      </div>
+      <div class="gs-info">
+        <div class="gs-name">Gray 5</div>
+        <div class="gs-hexes">#D0D0D0 → #D0D2D3</div>
+        <div style="margin-top:4px;"><span class="de-badge de-close" style="font-size:8px;">FS 16533 Light gray</span></div>
+      </div>
+    </div>
+
+    <div class="gs-pair">
+      <div class="gs-swatches">
+        <div class="gs-half" style="background:#E8E8E8;" onclick="copy('#E8E8E8')"></div>
+        <div class="gs-half" style="background:#e8eae6;" onclick="copy('#e8eae6')"></div>
+      </div>
+      <div class="gs-info">
+        <div class="gs-name">Gray 6</div>
+        <div class="gs-hexes">#E8E8E8 → #E8EAE6</div>
+        <div style="margin-top:4px;"><span class="de-badge de-close" style="font-size:8px;">FS 16622 Near white</span></div>
+      </div>
+    </div>
+
+    <div class="gs-pair">
+      <div class="gs-swatches">
+        <div class="gs-half" style="background:#FAFAFA;border:1px solid rgba(0,0,0,0.07);" onclick="copy('#FAFAFA')"></div>
+        <div class="gs-half" style="background:#f1f0ee;border:1px solid rgba(0,0,0,0.07);" onclick="copy('#f1f0ee')"></div>
+      </div>
+      <div class="gs-info">
+        <div class="gs-name">Gray 7</div>
+        <div class="gs-hexes">#FAFAFA → #F1F0EE</div>
+        <div style="margin-top:4px;"><span class="de-badge de-close" style="font-size:8px;">FS 16925 White</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+function copy(hex) {
+  navigator.clipboard.writeText(hex).catch(() => {});
+  const t = document.getElementById('toast');
+  t.textContent = hex + ' copied';
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+</script>
+</body>
+</html>
